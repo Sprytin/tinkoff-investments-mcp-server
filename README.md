@@ -53,20 +53,29 @@ tinkoff:
 ./gradlew build
 ```
 
-4. **Запустите сервер:**
-```bash
-# Все инструменты
-java -jar build/libs/rich-0.0.1-SNAPSHOT.jar
+## Использование с MCP клиентами
 
-# Только чтение данных
-java -jar build/libs/rich-0.0.1-SNAPSHOT.jar --spring.profiles.active=read-mcp
+### Claude Desktop
 
-# Только торговля
-java -jar build/libs/rich-0.0.1-SNAPSHOT.jar --spring.profiles.active=trade-mcp
+Добавьте в конфигурацию `claude_desktop_config.json`:
 
-# Только sandbox
-java -jar build/libs/rich-0.0.1-SNAPSHOT.jar --spring.profiles.active=sandbox-mcp
+```json
+{
+  "mcpServers": {
+    "tinkoff-invest": {
+      "command": "java",
+      "args": ["-jar", "/path/to/rich-0.0.1-SNAPSHOT.jar"],
+      "env": {
+        "SPRING_PROFILES_ACTIVE": "read-mcp,sandbox-mcp"
+      }
+    }
+  }
+}
 ```
+
+### Другие MCP клиенты
+
+Сервер использует STDIO транспорт, поэтому совместим с любыми MCP клиентами, поддерживающими этот протокол.
 
 ## Конфигурация
 
@@ -101,31 +110,6 @@ tinkoff:
   app-name: rich-mcp-server          # Имя приложения
   target: invest-public-api.tinkoff.ru:443  # Адрес API
 ```
-
-## Использование с MCP клиентами
-
-### Claude Desktop
-
-Добавьте в конфигурацию `claude_desktop_config.json`:
-
-```json
-{
-  "mcpServers": {
-    "tinkoff-invest": {
-      "command": "java",
-      "args": ["-jar", "/path/to/rich-0.0.1-SNAPSHOT.jar"],
-      "env": {
-        "SPRING_PROFILES_ACTIVE": "read-mcp,sandbox-mcp"
-      }
-    }
-  }
-}
-```
-
-### Другие MCP клиенты
-
-Сервер использует STDIO транспорт, поэтому совместим с любыми MCP клиентами, поддерживающими этот протокол.
-
 ## API Инструменты
 
 ### Чтение данных
