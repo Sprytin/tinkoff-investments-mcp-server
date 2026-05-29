@@ -42,8 +42,10 @@ class TinkoffMcpConfig {
     fun investApi(channel: ManagedChannel): InvestApi = InvestApi.createApi(channel)
 
     @Bean
-    fun toolsProvider(sandboxTools: SandboxTools): ToolCallbackProvider =
-        MethodToolCallbackProvider.builder().toolObjects(sandboxTools).build();
+    fun toolsProvider(toolServices: List<McpToolService>): ToolCallbackProvider =
+    MethodToolCallbackProvider.builder()
+        .toolObjects(*toolServices.toTypedArray())
+        .build()
 }
 
 @Configuration
